@@ -1,11 +1,9 @@
-﻿using DarkUI.Config;
+using DarkUI.Config;
 using System;
 using System.Drawing;
 
-namespace DarkUI.Controls
-{
-    public class DarkListItem
-    {
+namespace DarkUI.Controls {
+    public class DarkListItem {
         #region Event Region
 
         public event EventHandler TextChanged;
@@ -16,15 +14,15 @@ namespace DarkUI.Controls
 
         private string _text;
 
+        private string _subText;
+
         #endregion
 
         #region Property Region
 
-        public string Text
-        {
+        public string Text {
             get { return _text; }
-            set
-            {
+            set {
                 _text = value;
 
                 if (TextChanged != null)
@@ -32,9 +30,15 @@ namespace DarkUI.Controls
             }
         }
 
+        public string SubText {
+            get => _subText; set => _subText = value;
+        }
+
         public Rectangle Area { get; set; }
 
         public Color TextColor { get; set; }
+
+        public Color SubTextColor { get; set; }
 
         public FontStyle FontStyle { get; set; }
 
@@ -46,16 +50,15 @@ namespace DarkUI.Controls
 
         #region Constructor Region
 
-        public DarkListItem()
-        {
+        public DarkListItem() {
             TextColor = Colors.LightText;
             FontStyle = FontStyle.Regular;
         }
 
-        public DarkListItem(string text)
-            : this()
-        {
+        public DarkListItem(string text, string subText)
+            : this() {
             Text = text;
+            SubText = subText;
         }
 
         #endregion

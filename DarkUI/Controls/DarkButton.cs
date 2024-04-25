@@ -1,15 +1,13 @@
-﻿using DarkUI.Config;
+using DarkUI.Config;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace DarkUI.Controls
-{
+namespace DarkUI.Controls {
     [ToolboxBitmap(typeof(Button))]
     [DefaultEvent("Click")]
-    public class DarkButton : Button
-    {
+    public class DarkButton : Button {
         #region Field Region
 
         private DarkButtonStyle _style = DarkButtonStyle.Normal;
@@ -20,26 +18,43 @@ namespace DarkUI.Controls
 
         private int _padding = Consts.Padding / 2;
         private int _imagePadding = 5; // Consts.Padding / 2
+        private float _iconScale = 1;
+        private Image _centerIcon;
+
 
         #endregion
 
         #region Designer Property Region
 
-        public new string Text
-        {
+        public new string Text {
             get { return base.Text; }
-            set
-            {
+            set {
                 base.Text = value;
                 Invalidate();
             }
         }
 
-        public new bool Enabled
-        {
+        [Category("Appearance")]
+        public Image CenterIcon {
+            get => _centerIcon;
+            set {
+                _centerIcon = value;
+                Invalidate();
+            }
+        }
+
+        [Category("Appearance")]
+        public float CenterIconScale {
+            get => _iconScale;
+            set {
+                _iconScale = value;
+                Invalidate();
+            }
+        }
+
+        public new bool Enabled {
             get { return base.Enabled; }
-            set
-            {
+            set {
                 base.Enabled = value;
                 Invalidate();
             }
@@ -48,11 +63,9 @@ namespace DarkUI.Controls
         [Category("Appearance")]
         [Description("Determines the style of the button.")]
         [DefaultValue(DarkButtonStyle.Normal)]
-        public DarkButtonStyle ButtonStyle
-        {
+        public DarkButtonStyle ButtonStyle {
             get { return _style; }
-            set
-            {
+            set {
                 _style = value;
                 Invalidate();
             }
@@ -61,11 +74,9 @@ namespace DarkUI.Controls
         [Category("Appearance")]
         [Description("Determines the amount of padding between the image and text.")]
         [DefaultValue(5)]
-        public int ImagePadding
-        {
+        public int ImagePadding {
             get { return _imagePadding; }
-            set
-            {
+            set {
                 _imagePadding = value;
                 Invalidate();
             }
@@ -77,57 +88,49 @@ namespace DarkUI.Controls
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool AutoEllipsis
-        {
+        public new bool AutoEllipsis {
             get { return false; }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public DarkControlState ButtonState
-        {
+        public DarkControlState ButtonState {
             get { return _buttonState; }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new ContentAlignment ImageAlign
-        {
+        public new ContentAlignment ImageAlign {
             get { return base.ImageAlign; }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool FlatAppearance
-        {
+        public new bool FlatAppearance {
             get { return false; }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new FlatStyle FlatStyle
-        {
+        public new FlatStyle FlatStyle {
             get { return base.FlatStyle; }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new ContentAlignment TextAlign
-        {
+        public new ContentAlignment TextAlign {
             get { return base.TextAlign; }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool UseCompatibleTextRendering
-        {
+        public new bool UseCompatibleTextRendering {
             get { return false; }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new bool UseVisualStyleBackColor
-        {
+        public new bool UseVisualStyleBackColor {
             get { return false; }
         }
 
@@ -135,8 +138,7 @@ namespace DarkUI.Controls
 
         #region Constructor Region
 
-        public DarkButton()
-        {
+        public DarkButton() {
             SetStyle(ControlStyles.OptimizedDoubleBuffer |
                      ControlStyles.ResizeRedraw |
                      ControlStyles.UserPaint, true);
@@ -152,10 +154,8 @@ namespace DarkUI.Controls
 
         #region Method Region
 
-        private void SetButtonState(DarkControlState buttonState)
-        {
-            if (_buttonState != buttonState)
-            {
+        private void SetButtonState(DarkControlState buttonState) {
+            if (_buttonState != buttonState) {
                 _buttonState = buttonState;
                 Invalidate();
             }
@@ -165,40 +165,34 @@ namespace DarkUI.Controls
 
         #region Event Handler Region
 
-        protected override void OnCreateControl()
-        {
+        protected override void OnCreateControl() {
             base.OnCreateControl();
 
             var form = FindForm();
-            if (form != null)
-            {
+            if (form != null) {
                 if (form.AcceptButton == this)
                     _isDefault = true;
             }
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
+        protected override void OnMouseMove(MouseEventArgs e) {
             base.OnMouseMove(e);
 
             if (_spacePressed)
                 return;
 
-            if (e.Button == MouseButtons.Left)
-            {
+            if (e.Button == MouseButtons.Left) {
                 if (ClientRectangle.Contains(e.Location))
                     SetButtonState(DarkControlState.Pressed);
                 else
                     SetButtonState(DarkControlState.Hover);
             }
-            else
-            {
+            else {
                 SetButtonState(DarkControlState.Hover);
             }
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
+        protected override void OnMouseDown(MouseEventArgs e) {
             base.OnMouseDown(e);
 
             if (!ClientRectangle.Contains(e.Location))
@@ -207,8 +201,7 @@ namespace DarkUI.Controls
             SetButtonState(DarkControlState.Pressed);
         }
 
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
+        protected override void OnMouseUp(MouseEventArgs e) {
             base.OnMouseUp(e);
 
             if (_spacePressed)
@@ -217,8 +210,7 @@ namespace DarkUI.Controls
             SetButtonState(DarkControlState.Normal);
         }
 
-        protected override void OnMouseLeave(EventArgs e)
-        {
+        protected override void OnMouseLeave(EventArgs e) {
             base.OnMouseLeave(e);
 
             if (_spacePressed)
@@ -227,8 +219,7 @@ namespace DarkUI.Controls
             SetButtonState(DarkControlState.Normal);
         }
 
-        protected override void OnMouseCaptureChanged(EventArgs e)
-        {
+        protected override void OnMouseCaptureChanged(EventArgs e) {
             base.OnMouseCaptureChanged(e);
 
             if (_spacePressed)
@@ -240,15 +231,13 @@ namespace DarkUI.Controls
                 SetButtonState(DarkControlState.Normal);
         }
 
-        protected override void OnGotFocus(EventArgs e)
-        {
+        protected override void OnGotFocus(EventArgs e) {
             base.OnGotFocus(e);
 
             Invalidate();
         }
 
-        protected override void OnLostFocus(EventArgs e)
-        {
+        protected override void OnLostFocus(EventArgs e) {
             base.OnLostFocus(e);
 
             _spacePressed = false;
@@ -261,23 +250,19 @@ namespace DarkUI.Controls
                 SetButtonState(DarkControlState.Hover);
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
+        protected override void OnKeyDown(KeyEventArgs e) {
             base.OnKeyDown(e);
 
-            if (e.KeyCode == Keys.Space)
-            {
+            if (e.KeyCode == Keys.Space) {
                 _spacePressed = true;
                 SetButtonState(DarkControlState.Pressed);
             }
         }
 
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
+        protected override void OnKeyUp(KeyEventArgs e) {
             base.OnKeyUp(e);
 
-            if (e.KeyCode == Keys.Space)
-            {
+            if (e.KeyCode == Keys.Space) {
                 _spacePressed = false;
 
                 var location = Cursor.Position;
@@ -289,8 +274,7 @@ namespace DarkUI.Controls
             }
         }
 
-        public override void NotifyDefault(bool value)
-        {
+        public override void NotifyDefault(bool value) {
             base.NotifyDefault(value);
 
             if (!DesignMode)
@@ -304,8 +288,7 @@ namespace DarkUI.Controls
 
         #region Paint Region
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
+        protected override void OnPaint(PaintEventArgs e) {
             var g = e.Graphics;
             var rect = new Rectangle(0, 0, ClientSize.Width, ClientSize.Height);
 
@@ -313,15 +296,12 @@ namespace DarkUI.Controls
             var borderColor = Colors.GreySelection;
             var fillColor = _isDefault ? Colors.DarkBlueBackground : Colors.LightBackground;
 
-            if (Enabled)
-            {
-                if (ButtonStyle == DarkButtonStyle.Normal)
-                {
+            if (Enabled) {
+                if (ButtonStyle == DarkButtonStyle.Normal) {
                     if (Focused && TabStop)
                         borderColor = Colors.BlueHighlight;
 
-                    switch (ButtonState)
-                    {
+                    switch (ButtonState) {
                         case DarkControlState.Hover:
                             fillColor = _isDefault ? Colors.BlueBackground : Colors.LighterBackground;
                             break;
@@ -330,10 +310,8 @@ namespace DarkUI.Controls
                             break;
                     }
                 }
-                else if (ButtonStyle == DarkButtonStyle.Flat)
-                {
-                    switch (ButtonState)
-                    {
+                else if (ButtonStyle == DarkButtonStyle.Flat) {
+                    switch (ButtonState) {
                         case DarkControlState.Normal:
                             fillColor = Colors.GreyBackground;
                             break;
@@ -346,39 +324,40 @@ namespace DarkUI.Controls
                     }
                 }
             }
-            else
-            {
+            else {
                 textColor = Colors.DisabledText;
                 fillColor = Colors.DarkGreySelection;
             }
 
-            using (var b = new SolidBrush(fillColor))
-            {
+            using (var b = new SolidBrush(fillColor)) {
                 g.FillRectangle(b, rect);
             }
 
-            if (ButtonStyle == DarkButtonStyle.Normal)
-            {
-                using (var p = new Pen(borderColor, 1))
-                {
+            if (ButtonStyle == DarkButtonStyle.Normal) {
+                using (var p = new Pen(borderColor, 1)) {
                     var modRect = new Rectangle(rect.Left, rect.Top, rect.Width - 1, rect.Height - 1);
 
                     g.DrawRectangle(p, modRect);
                 }
             }
 
+            if (_centerIcon != null) {
+                int w = (int)(_centerIcon.Width * _iconScale);
+                int h = (int)(_centerIcon.Height * _iconScale);
+                Rectangle rectangle = new Rectangle(rect.Width / 2 - w / 2, rect.Height / 2 - h / 2, w, h);
+                g.DrawImage(_centerIcon, rectangle);
+            }
+
             var textOffsetX = 0;
             var textOffsetY = 0;
 
-            if (Image != null)
-            {
+            if (Image != null) {
                 var stringSize = g.MeasureString(Text, Font, rect.Size);
 
                 var x = (ClientSize.Width / 2) - (Image.Size.Width / 2);
                 var y = (ClientSize.Height / 2) - (Image.Size.Height / 2);
 
-                switch (TextImageRelation)
-                {
+                switch (TextImageRelation) {
                     case TextImageRelation.ImageAboveText:
                         textOffsetY = (Image.Size.Height / 2) + (ImagePadding / 2);
                         y = y - ((int)(stringSize.Height / 2) + (ImagePadding / 2));
@@ -399,14 +378,12 @@ namespace DarkUI.Controls
                 g.DrawImageUnscaled(Image, x, y);
             }
 
-            using (var b = new SolidBrush(textColor))
-            {
+            using (var b = new SolidBrush(textColor)) {
                 var modRect = new Rectangle(rect.Left + textOffsetX + Padding.Left,
                                             rect.Top + textOffsetY + Padding.Top, rect.Width - Padding.Horizontal,
                                             rect.Height - Padding.Vertical);
 
-                var stringFormat = new StringFormat
-                {
+                var stringFormat = new StringFormat {
                     LineAlignment = StringAlignment.Center,
                     Alignment = StringAlignment.Center,
                     Trimming = StringTrimming.EllipsisCharacter

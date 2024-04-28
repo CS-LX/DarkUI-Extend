@@ -1,4 +1,5 @@
 using DarkUI.Collections;
+using DarkUI.Config;
 using System;
 using System.Drawing;
 
@@ -146,6 +147,8 @@ namespace DarkUI.Controls {
         public DarkTreeNode NextVisibleNode { get; set; }
 
         public int VisibleIndex { get; set; }
+
+        public Color FontColor { get; set; } = Colors.LightText;
 
         public bool IsNodeAncestor(DarkTreeNode node) {
             var parent = ParentNode;

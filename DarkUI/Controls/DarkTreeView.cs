@@ -1092,7 +1092,7 @@ namespace DarkUI.Controls {
             }
 
             // 4. Draw text
-            using (var b = new SolidBrush(Colors.LightText)) {
+            using (var b = new SolidBrush(node.FontColor)) {
                 var stringFormat = new StringFormat {
                     Alignment = StringAlignment.Near,
                     LineAlignment = StringAlignment.Center

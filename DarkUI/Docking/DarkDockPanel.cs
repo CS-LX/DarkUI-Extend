@@ -1,4 +1,4 @@
-﻿using DarkUI.Config;
+using DarkUI.Config;
 using DarkUI.Win32;
 using System;
 using System.Collections.Generic;
@@ -29,6 +29,9 @@ namespace DarkUI.Docking
         #endregion
 
         #region Property Region
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public List<DarkDockContent> Content => _contents;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
